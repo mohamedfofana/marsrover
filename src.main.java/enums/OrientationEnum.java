@@ -1,13 +1,13 @@
-package main.java.enums;
+package enums;
 
 import lombok.Getter;
 
 @Getter
 public enum OrientationEnum {
-	EAST("E","S","N"),
-	WEST("W","N","S"),
-	NORTH("N","E","W"),
-	SOUTH("S","W","E");
+	WEST("W","S","N"),
+	EAST("E","N","S"),
+	NORTH("N","W","E"),
+	SOUTH("S","E","W");
 
 	private final String code;
 	private final String left;

@@ -1,4 +1,4 @@
-package main.java.run;
+package run;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,38 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import main.java.enums.MoveEnum;
-import main.java.enums.OrientationEnum;
-import main.java.model.Plateau;
-import main.java.model.Rover;
-import main.java.service.RoverService;
-import main.java.service.impl.RoverServiceImpl;
+import enums.MoveEnum;
+import enums.OrientationEnum;
+import model.Plateau;
+import model.Rock;
+import model.Rover;
+import service.impl.RoverServiceImpl;
 
 public class Launcher {
-	static private List<Rover> rovers;
-	static private Plateau plateau;
-	static private RoverService roverService;
+	static private RoverServiceImpl roverService;
 
 	private static void initMarsRover(String filepath) {
 		try(FileInputStream in = new FileInputStream(filepath); Scanner scan = new Scanner(in);){
-			rovers = new ArrayList<Rover>();
-			plateau = new Plateau();
-			plateau.setWidth(scan.nextInt());
-			plateau.setHeigh(scan.nextInt());
-
+			Plateau plateau = new Plateau(scan.nextInt(), scan.nextInt());
 			roverService = new RoverServiceImpl(plateau);
-
 			while(scan.hasNext()) {
 				Rover rover = new Rover();
 				rover.setX(scan.nextInt());
 				rover.setY(scan.nextInt());
-				//				rover.setOrientation(OrientationEnum.getOrientationByCode(scan.next()));
 				rover.setOrientation(OrientationEnum.getOrientationByCode(scan.next()));
 				char[] moves = scan.next().toCharArray();
 				for (Character c : moves) {
 					rover.addMove(MoveEnum.valueOf(""+c));
 				}
-				rovers.add(rover);
+				plateau.add(rover);
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("The file does not exist/");
@@ -50,15 +42,11 @@ public class Launcher {
 	}
 
 	public static void moveRovers() {
-		for (Rover rover : rovers) {
-			for (MoveEnum move : rover.getMoves()) {
-				roverService.move(rover, move);
-			}
-		}
+		roverService.moveRovers();
 	}
 
 	public static void showRoversPosition() {
-		roverService.showRoversPosition(rovers);
+		roverService.showRoversPosition();
 	}
 
 	public static void main(String[] args) {
@@ -66,6 +54,7 @@ public class Launcher {
 			System.out.println("You must enter an input file.");
 			return;
 		}
+		
 		initMarsRover(args[0]);
 		moveRovers();
 		showRoversPosition();
