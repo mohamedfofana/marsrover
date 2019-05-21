@@ -5,22 +5,36 @@ import java.util.List;
 
 import enums.MoveEnum;
 import enums.OrientationEnum;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 public class Rover {
+	private final String name;
 	private int x;
 	private int y;
 	private OrientationEnum orientation;
+	private Plateau plateau;
+
 	List<MoveEnum> moves = new ArrayList<>(0);
-	
+
+	public Rover(String name, int x, int y, OrientationEnum orientation) {
+		this.x = x;
+		this.y = y;
+		this.orientation = orientation;
+		this.name = name;
+	}
+
+	public Rover(String name, int x, int y, OrientationEnum orientation, Plateau plateau) {
+		this.x = x;
+		this.y = y;
+		this.orientation = orientation;
+		this.plateau = plateau;
+		this.name = name;
+	}
+
 	public void addMove(MoveEnum m){
 		this.moves.add(m);
 	}
-	
-	
+
+
 	public void move(MoveEnum move) {
 		if (MoveEnum.L.equals(move))
 			moveLeft();
@@ -28,6 +42,8 @@ public class Rover {
 			moveRight();
 		else if (MoveEnum.M.equals(move))
 			moveForward();
+		else if (MoveEnum.B.equals(move))
+			moveBackward();
 	}
 
 	public void moveLeft() {
@@ -39,50 +55,95 @@ public class Rover {
 		OrientationEnum currentOrienation = orientation;
 		orientation = OrientationEnum.getOrientationByCode(currentOrienation.getRight());
 	}
-	
+
 	public void moveForward() {
+		int newX = x;
+		int newY = y;
 		switch (orientation) {
 		case NORTH:
-			y++;
+			newY++;
 			break;
 		case SOUTH:
-			y--;
+			newY--;
 			break;
 		case WEST:
-			x--;
+			newX--;
 			break;
 		case EAST:
-			x++;
+			newX++;
+			break;
+		case NORTH_EAST:
+			newX++;
+			newY++;
+			break;
+		case NORTH_WEST:
+			newX--;
+			newY++;
+			break;
+		case SOUTH_EAST:
+			newX++;
+			newY--;
+			break;
+		case SOUTH_WEST:
+			newX--;
+			newY--;
 			break;
 		default:
 			break;
 		}
-	}
-	
-	public void moveBackward() {
-		switch (orientation) {
-		case NORTH:
-			y--;
-			break;
-		case SOUTH:
-			y++;
-			break;
-		case WEST:
-			x--;
-			break;
-		case EAST:
-			x++;
-			break;
-		default:
-			break;
+		if( plateau.canRoverMoove(name, newX, newY)){
+			x = newX;
+			y = newY;
 		}
 	}
 
-	public boolean collide(Rover rover) {
-		return (this.x == rover.x && this.y == rover.y);
-		
+	public void moveBackward() {
+		int newX = x;
+		int newY = y;
+		switch (orientation) {
+		case NORTH:
+			newY--;
+			break;
+		case SOUTH:
+			newY++;
+			break;
+		case WEST:
+			newX++;
+			break;
+		case EAST:
+			newX--;
+			break;
+		case NORTH_EAST:
+			newX--;
+			newY--;
+			break;
+		case NORTH_WEST:
+			newX++;
+			newY--;
+			break;
+		case SOUTH_EAST:
+			newX--;
+			newY++;
+			break;
+		case SOUTH_WEST:
+			newX++;
+			newY++;
+			break;
+		default:
+			break;
+		}
+
+		if( plateau.canRoverMoove(name, newX, newY)){
+			x = newX;
+			y = newY;
+		}
 	}
-	
+
+	public boolean collide(int newX, int newY) {
+		return (this.x == newX && this.y == newY);
+
+	}
+
 	public void performMoves() {
 		for (MoveEnum m : moves) {
 			move(m);
@@ -91,6 +152,18 @@ public class Rover {
 
 	@Override
 	public String toString() {
-		return this.x + " " + this.y + " " + this.orientation.getCode();
+		return this.name + " " + this.x + " " + this.y + " " + this.orientation.getCode();
 	}
+
+	public int getY() {
+		return y;
+	}
+	public int getX() {
+		return x;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
 }

@@ -4,10 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum OrientationEnum {
-	WEST("W","S","N"),
-	EAST("E","N","S"),
-	NORTH("N","W","E"),
-	SOUTH("S","E","W");
+	WEST("W","SW","NW"),
+	EAST("E","NE","SE"),
+	NORTH("N","NW","NE"),
+	SOUTH("S","SE","SW"),
+	NORTH_EAST("NE","N","E"),
+	NORTH_WEST("NW","W","N"),
+	SOUTH_EAST("SE","E","S"),
+	SOUTH_WEST("SW","S","W");
 
 	private final String code;
 	private final String left;

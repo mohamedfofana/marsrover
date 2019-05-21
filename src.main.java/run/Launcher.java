@@ -3,8 +3,6 @@ package run;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import enums.MoveEnum;
@@ -21,16 +19,18 @@ public class Launcher {
 		try(FileInputStream in = new FileInputStream(filepath); Scanner scan = new Scanner(in);){
 			Plateau plateau = new Plateau(scan.nextInt(), scan.nextInt());
 			roverService = new RoverServiceImpl(plateau);
+			int nbRocks = scan.nextInt();
+			for (int i = 0; i < nbRocks; i++) {
+				Rock rock = new Rock(scan.nextInt(), scan.nextInt());
+				plateau.addRock(rock);
+			}
 			while(scan.hasNext()) {
-				Rover rover = new Rover();
-				rover.setX(scan.nextInt());
-				rover.setY(scan.nextInt());
-				rover.setOrientation(OrientationEnum.getOrientationByCode(scan.next()));
+				Rover rover = new Rover(scan.next(), scan.nextInt(), scan.nextInt(), OrientationEnum.getOrientationByCode(scan.next()), plateau);
 				char[] moves = scan.next().toCharArray();
 				for (Character c : moves) {
 					rover.addMove(MoveEnum.valueOf(""+c));
 				}
-				plateau.add(rover);
+				plateau.addRover(rover);
 			}
 		} catch (FileNotFoundException e) {
 			System.out.println("The file does not exist/");
@@ -55,7 +55,8 @@ public class Launcher {
 			return;
 		}
 		
-		initMarsRover(args[0]);
+//		initMarsRover(args[0]);
+		initMarsRover("/Users/mfofana/Meritis/input_rocks_simple.txt");
 		moveRovers();
 		showRoversPosition();
 	}

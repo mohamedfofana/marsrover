@@ -8,5 +8,17 @@ public class Rock {
 		this.x = x;
 		this.y = y;
 	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
 	
+	public boolean collide(int newX, int newY) {
+		return (this.x == newX && this.y == newY);
+
+	}
 }

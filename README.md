@@ -26,6 +26,7 @@ The position is made up of two integers and a letter separated by spaces , corre
 
 Each rover will be finished sequentially , which means that the second rover won't start to move until the first one has finished moving .
 
+If the rover want move out of bound, the move is not done. 
 OUTPUT :
 
 The output for each rover should be its final co-ordinates and heading .
@@ -47,7 +48,6 @@ The program will be launched with this command line :
 java -jar rover.jar input.txt
 
 # Rajouter des spécifications complémentaires
-
 Rajouter la possiblité d'avoir des rochers sur le plateau
 
 Découper les directions en 8
@@ -57,3 +57,8 @@ Permettre au robot de reculer
 Interdire à deux robots d'être sur la même position
 
 Envoyer une deuxième liste de commandes au rover
+
+Grille circulaire (comme une planète)
+
+Le rover doit reporter les obstacles rencontré
+

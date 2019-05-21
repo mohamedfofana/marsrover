@@ -17,16 +17,13 @@ public class RoverTest {
 	@Before
 	public void initRovers() {
 		roverService = new RoverServiceImpl();
-		rover = new Rover();
-		rover.setX(3);
-		rover.setY(3);
-		rover.setOrientation(OrientationEnum.NORTH);
+		rover = new Rover("R1", 3, 3, OrientationEnum.NORTH);
 	}
 	
 	@Test
 	public void moveForward_from_north_3_3_should_be_3_4() {
 		// GIVEN
-		Rover rover = rover(3, 3, OrientationEnum.NORTH);
+		Rover rover = new Rover("R2", 3, 3, OrientationEnum.NORTH);
 		int expectedY = 4;
 		int expectedX = 3;
 		
@@ -38,11 +35,4 @@ public class RoverTest {
 		assertEquals(expectedX, rover.getX());
 	}
 
-	private Rover rover(int x, int y, OrientationEnum orientation) {
-		Rover rover = new Rover();
-		rover.setX(x);
-		rover.setY(y);
-		rover.setOrientation(orientation);
-		return rover;
-	}
 }
